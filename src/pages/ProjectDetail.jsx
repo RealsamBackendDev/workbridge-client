@@ -88,7 +88,7 @@ export default function ProjectDetail() {
     }
   };
 
-  if (!project) return <p className="p-10 text-center text-gray-500">Loading...</p>;
+  if (!project) return <p className="p-10 text-center text-stone">Loading...</p>;
 
   const isClient = user?.id === project.clientId;
   const isFreelancer = user?.id === project.freelancerId;
@@ -100,16 +100,16 @@ export default function ProjectDetail() {
           <h1 className="text-xl font-bold">{project.title}</h1>
           <p className="text-green-700 font-medium mt-1">₦{project.budget?.toLocaleString()}</p>
           <span className={`text-xs px-2 py-1 rounded inline-block mt-2 ${
-            project.status === "ACTIVE" ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-600"
+            project.status === "ACTIVE" ? "bg-mist/60 text-forest" : "bg-mist/30 text-stone"
           }`}>
             {project.status}
           </span>
-          <p className="text-sm text-gray-600 mt-4 whitespace-pre-wrap">{project.description}</p>
-          <p className="text-sm text-gray-500 mt-4">
+          <p className="text-sm text-stone mt-4 whitespace-pre-wrap">{project.description}</p>
+          <p className="text-sm text-stone mt-4">
             {project.approvedMilestones}/{project.milestones?.length ?? milestones.length} milestones approved
           </p>
           {isClient && project.status === "ACTIVE" && (
-            <button onClick={completeProject} className="mt-4 w-full bg-slate-800 text-white px-4 py-2 rounded text-sm">
+            <button onClick={completeProject} className="mt-4 w-full bg-forest text-white px-4 py-2 rounded text-sm">
               Mark project complete
             </button>
           )}
@@ -129,7 +129,7 @@ export default function ProjectDetail() {
               <input className="border p-2 rounded flex-1" type="date"
                 value={milestoneForm.dueDate} onChange={(e) => setMilestoneForm({ ...milestoneForm, dueDate: e.target.value })} required />
             </div>
-            <button className="w-full bg-blue-600 text-white px-4 py-2 rounded text-sm">Create milestone</button>
+            <button className="w-full tebg-forest text-white px-4 py-2 rounded text-sm">Create milestone</button>
           </form>
         )}
       </div>
@@ -141,7 +141,7 @@ export default function ProjectDetail() {
             <div className="flex justify-between items-start">
               <div>
                 <p className="font-medium">{m.title}</p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-stone">
                   Due {new Date(m.dueDate).toLocaleDateString()} · Attempt {m.submissionAttempts}/3
                 </p>
               </div>
@@ -151,15 +151,15 @@ export default function ProjectDetail() {
                   m.status === "APPROVED" ? "bg-green-100 text-green-700"
                   : m.status === "SUBMITTED" ? "bg-yellow-100 text-yellow-700"
                   : m.status === "REJECTED" ? "bg-red-100 text-red-700"
-                  : "bg-slate-100 text-slate-600"
+                  : "bg-mist/30 text-stone"
                 }`}>{m.status}</span>
               </div>
             </div>
-            <p className="text-sm text-gray-600 mt-2">{m.description}</p>
+            <p className="text-sm text-stone mt-2">{m.description}</p>
 
             {m.submission && (
-              <div className="mt-3 bg-slate-50 rounded p-3 text-sm">
-                <p className="font-medium text-xs text-gray-500 mb-1">LATEST SUBMISSION</p>
+              <div className="mt-3 bg-cream/60 rounded p-3 text-sm">
+                <p className="font-medium text-xs text-stone mb-1">LATEST SUBMISSION</p>
                 <p className="whitespace-pre-wrap">{m.submission}</p>
                 {m.rejectionReason && (
                   <p className="mt-2 text-red-600 text-xs">Rejected: {m.rejectionReason}</p>
@@ -174,12 +174,12 @@ export default function ProjectDetail() {
                     <textarea className="w-full border p-2 rounded" rows="3" placeholder="Describe the work delivered..."
                       value={submission} onChange={(e) => setSubmission(e.target.value)} />
                     <div className="flex gap-2">
-                      <button onClick={() => submitMilestone(m.id)} className="bg-blue-600 text-white px-3 py-1 rounded text-sm">Send submission</button>
-                      <button onClick={() => setSubmitFor(null)} className="text-sm text-gray-500">Cancel</button>
+                      <button onClick={() => submitMilestone(m.id)} className="tebg-forest text-white px-3 py-1 rounded text-sm">Send submission</button>
+                      <button onClick={() => setSubmitFor(null)} className="text-sm text-stone">Cancel</button>
                     </div>
                   </div>
                 ) : (
-                  <button onClick={() => { setSubmitFor(m.id); setRejectFor(null); }} className="bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                  <button onClick={() => { setSubmitFor(m.id); setRejectFor(null); }} className="tebg-forest text-white px-3 py-1 rounded text-sm">
                     Submit work
                   </button>
                 )
@@ -193,7 +193,7 @@ export default function ProjectDetail() {
                         value={rejectReason} onChange={(e) => setRejectReason(e.target.value)} />
                       <div className="flex gap-2">
                         <button onClick={() => rejectMilestone(m.id)} className="bg-red-600 text-white px-3 py-1 rounded text-sm">Confirm rejection</button>
-                        <button onClick={() => setRejectFor(null)} className="text-sm text-gray-500">Cancel</button>
+                        <button onClick={() => setRejectFor(null)} className="text-sm text-stone">Cancel</button>
                       </div>
                     </>
                   ) : (
@@ -212,7 +212,7 @@ export default function ProjectDetail() {
           </div>
         ))}
         {milestones.length === 0 && (
-          <p className="text-gray-500 text-sm py-6 text-center">
+          <p className="text-stone text-sm py-6 text-center">
             {isClient ? "No milestones yet — add the first one." : "Waiting for the client to add milestones."}
           </p>
         )}

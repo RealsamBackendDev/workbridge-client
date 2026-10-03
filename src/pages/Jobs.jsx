@@ -1,25 +1,42 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import api from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 
 export default function Jobs() {
   const { user } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [jobs, setJobs] = useState([]);
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
+  const [search, setSearch] = useState(searchParams.get("search") || "");
+  const [category, setCategory] = useState(searchParams.get("category") || "");
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({
     title: "", description: "", category: "WEB_DEVELOPMENT",
     budgetMin: "", budgetMax: "", skillsRequired: "",
   });
 
-  const load = async () => {
-    const { data } = await api.get("/jobs", { params: { search, category } });
+  const load = async (s = search, c = category) => {
+    const { data } = await api.get("/jobs", { params: { search: s, category: c } });
     setJobs(data.data.jobs);
   };
 
-  useEffect(() => { load(); }, [search, category]);
+  useEffect(() => {
+    const s = searchParams.get("search") || "";
+    const c = searchParams.get("category") || "";
+    setSearch(s);
+    setCategory(c);
+    load(s, c);
+  }, [searchParams]);
+
+  const onSearch = (value) => {
+    setSearch(value);
+    setSearchParams(value ? { search: value } : {});
+  };
+
+  const onCategory = (value) => {
+    setCategory(value);
+    setSearchParams(value ? { category: value } : {});
+  };
 
   const createJob = async (e) => {
     e.preventDefault();
@@ -37,15 +54,15 @@ export default function Jobs() {
     <div>
       <div className="flex items-center gap-3 my-4">
         <input className="border p-2 rounded flex-1" placeholder="Search jobs..."
-          value={search} onChange={(e) => setSearch(e.target.value)} />
-        <select className="border p-2 rounded" value={category} onChange={(e) => setCategory(e.target.value)}>
+          value={search} onChange={(e) => onSearch(e.target.value)} />
+        <select className="border p-2 rounded" value={category} onChange={(e) => onCategory(e.target.value)}>
           <option value="">All categories</option>
           {["WEB_DEVELOPMENT", "MOBILE_DEVELOPMENT", "DESIGN", "WRITING", "MARKETING", "DATA", "OTHER"].map((c) => (
             <option key={c} value={c}>{c.replace(/_/g, " ")}</option>
           ))}
         </select>
         {user?.role === "CLIENT" && (
-          <button onClick={() => setShowForm(!showForm)} className="bg-blue-600 text-white px-4 py-2 rounded">
+          <button onClick={() => setShowForm(!showForm)} className="tebg-forest text-white px-4 py-2 rounded">
             {showForm ? "Cancel" : "+ Post a job"}
           </button>
         )}
@@ -78,17 +95,17 @@ export default function Jobs() {
                 ₦{job.budgetMin?.toLocaleString()} – ₦{job.budgetMax?.toLocaleString()}
               </span>
             </div>
-            <p className="text-gray-600 text-sm line-clamp-2 mt-1">{job.description}</p>
+            <p className="text-stone text-sm line-clamp-2 mt-1">{job.description}</p>
             <div className="flex gap-2 mt-3 flex-wrap">
-              <span className="bg-slate-100 text-xs px-2 py-1 rounded">{job.category.replace(/_/g, " ")}</span>
+              <span className="bg-mist/30 text-xs px-2 py-1 rounded">{job.category.replace(/_/g, " ")}</span>
               {job.skillsRequired.map((s) => (
-                <span key={s} className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded">{s}</span>
+                <span key={s} className="bg-mist/40 text-forest text-xs px-2 py-1 rounded">{s}</span>
               ))}
-              <span className="text-xs text-gray-400 ml-auto">{job.proposalCount ?? 0} proposals</span>
+              <span className="text-xs text-stone ml-auto">{job.proposalCount ?? 0} proposals</span>
             </div>
           </Link>
         ))}
-        {jobs.length === 0 && <p className="text-gray-500 text-center py-10">No jobs found.</p>}
+        {jobs.length === 0 && <p className="text-stone text-center py-10">No jobs found.</p>}
       </div>
     </div>
   );

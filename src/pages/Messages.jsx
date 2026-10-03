@@ -76,16 +76,16 @@ export default function Messages() {
           <button
             key={c.id}
             onClick={() => openConversation(c)}
-            className={`w-full text-left p-3 border-b hover:bg-slate-50 ${
-              active?.id === c.id ? "bg-blue-50" : ""
+            className={`w-full text-left p-3 border-b hover:bg-cream/60 ${
+              active?.id === c.id ? "bg-mist/40" : ""
             }`}
           >
             <p className="font-medium text-sm">{c.otherParty?.name}</p>
-            <p className="text-xs text-gray-500 truncate">{c.lastMessage || "No messages yet"}</p>
+            <p className="text-xs text-stone truncate">{c.lastMessage || "No messages yet"}</p>
           </button>
         ))}
         {conversations.length === 0 && (
-          <p className="p-4 text-sm text-gray-500">Conversations appear after a proposal is accepted.</p>
+          <p className="p-4 text-sm text-stone">Conversations appear after a proposal is accepted.</p>
         )}
       </div>
 
@@ -98,7 +98,7 @@ export default function Messages() {
                 <div key={m.id} className={`flex ${m.mine ? "justify-end" : "justify-start"}`}>
                   <div
                     className={`max-w-xs px-3 py-2 rounded-lg text-sm ${
-                      m.mine ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-800"
+                      m.mine ? "tebg-forest text-white" : "bg-mist/30 text-forest"
                     }`}
                   >
                     {m.body}
@@ -114,11 +114,11 @@ export default function Messages() {
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
               />
-              <button className="bg-blue-600 text-white px-4 rounded">Send</button>
+              <button className="tebg-forest text-white px-4 rounded">Send</button>
             </form>
           </>
         ) : (
-          <p className="m-auto text-gray-500 text-sm">Select a conversation</p>
+          <p className="m-auto text-stone text-sm">Select a conversation</p>
         )}
       </div>
     </div>

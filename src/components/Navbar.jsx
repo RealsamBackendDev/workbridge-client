@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import Logo from "./Logo";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -11,8 +12,10 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-slate-900 text-white px-4 py-3 flex items-center gap-5">
-      <Link to="/jobs" className="font-bold text-lg">🌉 WorkBridge</Link>
+    <nav className="bg-forest text-white px-4 py-3 flex items-center gap-5">
+      <Link to="/" className="font-bold text-lg flex items-center gap-2">
+        <Logo size={28} /> WorkBridge
+      </Link>
       {user && (
         <>
           <Link to="/jobs" className="hover:underline">Jobs</Link>
@@ -25,13 +28,13 @@ export default function Navbar() {
       <div className="ml-auto flex items-center gap-4">
         {user ? (
           <>
-            <span className="text-sm text-slate-300">{user.name} · {user.role}</span>
+            <span className="text-sm text-cream/80">{user.name} · {user.role}</span>
             <button onClick={handleLogout} className="bg-red-600 px-3 py-1 rounded text-sm">Logout</button>
           </>
         ) : (
           <>
             <Link to="/login" className="hover:underline">Login</Link>
-            <Link to="/register" className="bg-blue-600 px-3 py-1 rounded text-sm">Sign up</Link>
+            <Link to="/register" className="tebg-forest px-3 py-1 rounded text-sm">Sign up</Link>
           </>
         )}
       </div>

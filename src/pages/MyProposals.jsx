@@ -22,10 +22,10 @@ export default function MyProposals() {
           <div key={p.id} className="border rounded p-4 bg-white">
             <div className="flex justify-between items-start">
               <div>
-                <Link to={`/jobs/${p.job?.id}`} className="font-semibold text-blue-700 hover:underline">
+                <Link to={`/jobs/${p.job?.id}`} className="font-semibold text-forest hover:underline">
                   {p.job?.title}
                 </Link>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-stone">
                   Bid ₦{p.bidAmount?.toLocaleString()} · {p.estimatedDays} days
                 </p>
               </div>
@@ -36,7 +36,7 @@ export default function MyProposals() {
                       ? "bg-green-100 text-green-700"
                       : p.status === "PENDING"
                       ? "bg-yellow-100 text-yellow-700"
-                      : "bg-slate-100 text-slate-600"
+                      : "bg-mist/30 text-stone"
                   }`}
                 >
                   {p.status}
@@ -48,10 +48,10 @@ export default function MyProposals() {
                 )}
               </div>
             </div>
-            <p className="text-sm text-gray-600 mt-2 line-clamp-2">{p.coverLetter}</p>
+            <p className="text-sm text-stone mt-2 line-clamp-2">{p.coverLetter}</p>
           </div>
         ))}
-        {proposals.length === 0 && <p className="text-gray-500 text-center py-10">No proposals yet.</p>}
+        {proposals.length === 0 && <p className="text-stone text-center py-10">No proposals yet.</p>}
       </div>
     </div>
   );

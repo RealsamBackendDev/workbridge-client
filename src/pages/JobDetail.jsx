@@ -45,7 +45,7 @@ export default function JobDetail() {
     load();
   };
 
-  if (!job) return <p className="p-10 text-center text-gray-500">Loading...</p>;
+  if (!job) return <p className="p-10 text-center text-stone">Loading...</p>;
   const isOwner = user?.id === job.client?.id;
 
   return (
@@ -55,11 +55,11 @@ export default function JobDetail() {
         <p className="text-green-700 font-medium mt-1">
           ₦{job.budgetMin?.toLocaleString()} – ₦{job.budgetMax?.toLocaleString()}
         </p>
-        <p className="text-gray-500 text-sm">Posted by {job.client?.name} · {job.status}</p>
-        <p className="mt-4 text-gray-700 whitespace-pre-wrap">{job.description}</p>
+        <p className="text-stone text-sm">Posted by {job.client?.name} · {job.status}</p>
+        <p className="mt-4 text-forest whitespace-pre-wrap">{job.description}</p>
         <div className="flex gap-2 mt-4 flex-wrap">
           {job.skillsRequired.map((s) => (
-            <span key={s} className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded">{s}</span>
+            <span key={s} className="bg-mist/40 text-forest text-xs px-2 py-1 rounded">{s}</span>
           ))}
         </div>
 
@@ -76,7 +76,7 @@ export default function JobDetail() {
               <input className="border p-2 rounded w-32" type="number" placeholder="Days"
                 value={form.estimatedDays} onChange={(e) => setForm({ ...form, estimatedDays: e.target.value })} required />
             </div>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded">Submit proposal</button>
+            <button className="tebg-forest text-white px-4 py-2 rounded">Submit proposal</button>
           </form>
         )}
       </div>
@@ -91,18 +91,18 @@ export default function JobDetail() {
                   <p className="font-medium">{p.freelancer?.name}</p>
                   <p className="text-green-700">₦{p.bidAmount?.toLocaleString()} · {p.estimatedDays} days</p>
                 </div>
-                <p className="text-sm text-gray-600 mt-2 line-clamp-3">{p.coverLetter}</p>
+                <p className="text-sm text-stone mt-2 line-clamp-3">{p.coverLetter}</p>
                 {p.status === "PENDING" && job.status === "OPEN" && (
                   <button onClick={() => accept(p.id)} className="mt-3 bg-green-600 text-white px-3 py-1 rounded text-sm">
                     Accept & hire
                   </button>
                 )}
                 {p.status !== "PENDING" && (
-                  <span className="text-xs bg-slate-100 px-2 py-1 rounded">{p.status}</span>
+                  <span className="text-xs bg-mist/30 px-2 py-1 rounded">{p.status}</span>
                 )}
               </div>
             ))}
-            {proposals.length === 0 && <p className="text-gray-500 text-sm">No proposals yet.</p>}
+            {proposals.length === 0 && <p className="text-stone text-sm">No proposals yet.</p>}
           </div>
         </div>
       )}

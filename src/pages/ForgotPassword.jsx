@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Mail, KeyRound, Lock } from "lucide-react";
 import api from "../lib/api";
+import Logo from "../components/Logo";
 
 export default function ForgotPassword() {
   const [step, setStep] = useState(1);
@@ -39,8 +40,9 @@ export default function ForgotPassword() {
 
   return (
     <div className="max-w-md mx-auto mt-16 border rounded-2xl p-8 shadow-sm bg-white">
-      <h2 className="text-xl font-bold mb-1">Reset your password</h2>
-      <p className="text-sm text-gray-500 mb-6">
+      <div className="flex justify-center mb-4"><Logo size={48} /></div>
+      <h2 className="text-xl font-bold mb-1 text-center">Reset your password</h2>
+      <p className="text-sm text-stone mb-6 text-center">
         {step === 1 ? "Enter your email and we'll send you a 6-digit code." : "Enter the code from your email and choose a new password."}
       </p>
 
@@ -50,30 +52,30 @@ export default function ForgotPassword() {
       {step === 1 ? (
         <form onSubmit={sendCode} className="space-y-4">
           <div className="relative">
-            <Mail size={16} className="absolute left-3 top-3.5 text-gray-400" />
+            <Mail size={16} className="absolute left-3 top-3.5 text-stone" />
             <input className={inputClass} type="email" placeholder="Email address"
               value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
-          <button className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium">Send reset code</button>
+          <button className="w-full tebg-forest text-white py-2.5 rounded-lg font-medium">Send reset code</button>
         </form>
       ) : (
         <form onSubmit={reset} className="space-y-4">
           <div className="relative">
-            <KeyRound size={16} className="absolute left-3 top-3.5 text-gray-400" />
+            <KeyRound size={16} className="absolute left-3 top-3.5 text-stone" />
             <input className={inputClass} placeholder="6-digit code"
               value={code} onChange={(e) => setCode(e.target.value)} required />
           </div>
           <div className="relative">
-            <Lock size={16} className="absolute left-3 top-3.5 text-gray-400" />
+            <Lock size={16} className="absolute left-3 top-3.5 text-stone" />
             <input className={inputClass} type="password" placeholder="New password (min 8 chars)"
               value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
           </div>
-          <button className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium">Reset password</button>
+          <button className="w-full tebg-forest text-white py-2.5 rounded-lg font-medium">Reset password</button>
         </form>
       )}
 
-      <p className="mt-6 text-sm text-gray-600 text-center">
-        Remembered it? <Link to="/login" className="text-blue-600 font-medium">Back to login</Link>
+      <p className="mt-6 text-sm text-stone text-center">
+        Remembered it? <Link to="/login" className="text-forest font-medium">Back to login</Link>
       </p>
     </div>
   );

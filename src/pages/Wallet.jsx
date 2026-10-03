@@ -35,12 +35,12 @@ export default function Wallet() {
     <div className="grid md:grid-cols-3 gap-6">
       <div>
         <div className="border rounded p-6 bg-white text-center">
-          <p className="text-sm text-gray-500">Available balance</p>
+          <p className="text-sm text-stone">Available balance</p>
           <p className="text-3xl font-bold text-green-700 mt-1">₦{balance?.toLocaleString() ?? "—"}</p>
         </div>
         <form onSubmit={topup} className="border rounded p-4 mt-4 bg-white space-y-3">
           <h3 className="font-semibold text-sm">Top up (simulated)</h3>
-          {message && <p className="bg-slate-100 p-2 rounded text-sm">{message}</p>}
+          {message && <p className="bg-mist/30 p-2 rounded text-sm">{message}</p>}
           <input className="w-full border p-2 rounded" type="number" placeholder="Amount ₦"
             value={amount} onChange={(e) => setAmount(e.target.value)} required />
           <button className="w-full bg-green-600 text-white px-4 py-2 rounded text-sm">Add funds</button>
@@ -56,7 +56,7 @@ export default function Wallet() {
                 <p className="text-sm font-medium">
                   {t.type === "MILESTONE_PAYMENT" ? "Milestone payment" : t.type}
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-stone">
                   with {t.counterparty?.name} · {new Date(t.createdAt).toLocaleString()}
                 </p>
               </div>
@@ -65,7 +65,7 @@ export default function Wallet() {
               </p>
             </div>
           ))}
-          {transactions.length === 0 && <p className="text-gray-500 text-sm text-center py-8">No transactions yet.</p>}
+          {transactions.length === 0 && <p className="text-stone text-sm text-center py-8">No transactions yet.</p>}
         </div>
       </div>
     </div>
