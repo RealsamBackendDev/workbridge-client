@@ -16,10 +16,10 @@ export default function Register() {
     e.preventDefault();
     setError("");
     setMessage("");
-    try {
+  try {
       const { data } = await api.post("/auth/register", form);
-      setMessage(`${data.message} After verifying, log in.`);
-      setTimeout(() => navigate("/login"), 2500);
+      setMessage(data.message);
+      setTimeout(() => navigate(`/verify-email?email=${encodeURIComponent(form.email)}`), 1200);
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
     }

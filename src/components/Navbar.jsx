@@ -15,7 +15,7 @@ export default function Navbar() {
     navigate("/login");
   };
 
-  const homePath = user ? (user.role === "CLIENT" ? "/jobs/my" : "/jobs") : "/";
+  const homePath = user ? (user.role === "CLIENT" ? "/jobs/my" : user.role === "ADMIN" ? "/admin/kyc" : "/jobs") : "/";
 
   const links = user ? (
     <>
@@ -32,8 +32,12 @@ export default function Navbar() {
           <Link to="/projects" onClick={() => setOpen(false)} className="hover:underline">Projects</Link>
         </>
       )}
+      {user.role === "ADMIN" && (
+        <Link to="/admin/kyc" onClick={() => setOpen(false)} className="hover:underline">KYC Review</Link>
+      )}
       <Link to="/messages" onClick={() => setOpen(false)} className="hover:underline">Messages</Link>
       <Link to="/wallet" onClick={() => setOpen(false)} className="hover:underline">Wallet</Link>
+      <Link to="/profile" onClick={() => setOpen(false)} className="hover:underline">Profile</Link>
     </>
   ) : null;
 
@@ -47,14 +51,15 @@ export default function Navbar() {
         <div className="ml-auto flex items-center gap-4">
           {user ? (
             <>
-              <span className="hidden sm:block text-sm text-cream/80">{user.name} · {user.role}</span>
+              <Link to="/profile" className="hidden sm:block text-sm text-cream/80 hover:text-white">
+                {user.name} · {user.role}
+              </Link>
               <button onClick={handleLogout} className="bg-red-600 hover:bg-red-500 px-3 py-1 rounded text-sm">Logout</button>
             </>
           ) : (
             <>
               <Link to="/login" className="hover:underline">Login</Link>
               <Link to="/register" className="bg-mist text-forest font-medium px-3 py-1 rounded hover:bg-sky">Sign up</Link>
-              <Link to="/profile" onClick={() => setOpen(false)} className="hover:underline">Profile</Link>
             </>
           )}
           <button onClick={() => setOpen(!open)} className="md:hidden" aria-label="Menu">

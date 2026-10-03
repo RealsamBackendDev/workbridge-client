@@ -15,6 +15,7 @@ export default function Profile() {
   const [kyc, setKyc] = useState({ documentType: "NIN", documentNumber: "", documentImage: "" });
   const [kycMessage, setKycMessage] = useState("");
   const [kycError, setKycError] = useState("");
+  const [saveMessage, setSaveMessage] = useState("");
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
 
@@ -36,6 +37,7 @@ export default function Profile() {
   const saveProfile = async (e) => {
     e.preventDefault();
     setSaving(true);
+    setSaveMessage("");
     try {
       const { data } = await api.patch("/users/me", {
         name: edit.name,
@@ -47,8 +49,9 @@ export default function Profile() {
       });
       setProfile(data.data.user);
       setUser(data.data.user);
+      setSaveMessage("Profile saved successfully.");
     } catch (err) {
-      alert(err.response?.data?.message || "Save failed");
+      setSaveMessage(err.response?.data?.message || "Save failed — check the backend console");
     }
     setSaving(false);
   };
@@ -74,6 +77,7 @@ export default function Profile() {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
+    setKycError("");
     const fd = new FormData();
     fd.append("file", file);
     fd.append("purpose", "kyc");
@@ -142,6 +146,11 @@ export default function Profile() {
 
         <form onSubmit={saveProfile} className="space-y-3 border-t border-stone/20 pt-4">
           <p className="font-semibold text-sm text-forest flex items-center gap-2"><Pencil size={14} /> Edit profile</p>
+          {saveMessage && (
+            <p className={`p-2 rounded text-sm ${saveMessage.includes("success") ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+              {saveMessage}
+            </p>
+          )}
           <input className={inputClass} value={edit.name} onChange={(e) => setEdit({ ...edit, name: e.target.value })} placeholder="Full name" />
           <textarea className={inputClass} rows="3" value={edit.bio} onChange={(e) => setEdit({ ...edit, bio: e.target.value })} placeholder="Short bio" />
           <div className="flex gap-3 flex-wrap">
@@ -163,14 +172,19 @@ export default function Profile() {
 
         {profile.kycStatus === "VERIFIED" && (
           <p className="text-sm text-stone">
-            Verified with <b className="text-forest">{profile.kycDocumentType}</b> ······{profile.kycDocumentNo?.slice(-4)}.
-            You can now be hired on any job.
+            Verified with <b className="text-forest">{profile.kycDocumentType}</b>. You can now be hired on any job.
           </p>
         )}
 
         {profile.kycStatus === "PENDING" && (
           <p className="text-sm text-stone">
             Your {profile.kycDocumentType} submission is being reviewed. You'll be able to receive hires once approved.
+          </p>
+        )}
+
+        {profile.kycStatus === "REJECTED" && profile.kycRejectionReason && (
+          <p className="text-sm text-red-600 bg-red-50 rounded p-3">
+            Rejection reason: {profile.kycRejectionReason}
           </p>
         )}
 
@@ -198,7 +212,7 @@ export default function Profile() {
 
         {showKycForm && profile.role !== "FREELANCER" && (
           <p className="text-sm text-stone border-t border-stone/20 pt-4">
-            KYC verification is only required for freelancers. Clients verify through wallet funding.
+            KYC verification is only required for freelancers.
           </p>
         )}
       </div>

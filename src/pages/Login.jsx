@@ -17,10 +17,15 @@ export default function Login() {
     try {
       await login(form.email, form.password);
       navigate("/jobs");
-    } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+    }  catch (err) {
+      const msg = err.response?.data?.message || "Login failed";
+      if (msg.toLowerCase().includes("not verified")) {
+        navigate(`/verify-email?email=${encodeURIComponent(form.email)}`);
+        return;
+      }
+      setError(msg);
     }
-  };
+};
 
   return (
     <div className="grid md:grid-cols-2 gap-0 max-w-4xl mx-auto mt-10 border rounded-2xl overflow-hidden shadow-sm">
