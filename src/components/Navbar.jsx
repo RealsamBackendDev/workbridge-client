@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import Logo from "./Logo";
+import api from "../lib/api";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -14,6 +15,18 @@ export default function Navbar() {
     setOpen(false);
     navigate("/login");
   };
+
+  const [unread, setUnread] = useState(0);
+
+useEffect(() => {
+  if (!user) return;
+  const poll = () => api.get("/conversations")
+    .then(({ data }) => setUnread(data.data.totalUnread || 0))
+    .catch(() => {});
+  poll();
+  const t = setInterval(poll, 30000);
+  return () => clearInterval(t);
+}, [user]);
 
   const homePath = user ? (user.role === "CLIENT" ? "/jobs/my" : user.role === "ADMIN" ? "/admin/kyc" : "/jobs") : "/";
 
@@ -35,7 +48,14 @@ export default function Navbar() {
       {user.role === "ADMIN" && (
         <Link to="/admin/kyc" onClick={() => setOpen(false)} className="hover:underline">KYC Review</Link>
       )}
-      <Link to="/messages" onClick={() => setOpen(false)} className="hover:underline">Messages</Link>
+      <Link to="/messages" onClick={() => setOpen(false)} className="hover:underline relative">
+  Messages
+  {unread > 0 && (
+    <span className="absolute -top-2 -right-4 bg-red-600 text-white text-[10px] rounded-full px-1.5 py-px">
+      {unread > 9 ? "9+" : unread}
+    </span>
+  )}
+</Link>
       <Link to="/wallet" onClick={() => setOpen(false)} className="hover:underline">Wallet</Link>
       <Link to="/profile" onClick={() => setOpen(false)} className="hover:underline">Profile</Link>
     </>

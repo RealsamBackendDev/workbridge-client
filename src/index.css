@@ -8,3 +8,12 @@ body {
 html, body, #root {
   height: 100%;
 }
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-forest text-white font-medium px-4 py-2 rounded-lg hover:bg-stone transition-colors disabled:opacity-50;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 bg-red-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-red-500 transition-colors;
+  }
+}

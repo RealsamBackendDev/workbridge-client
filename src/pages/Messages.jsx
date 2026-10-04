@@ -76,9 +76,8 @@ export default function Messages() {
           <button
             key={c.id}
             onClick={() => openConversation(c)}
-            className={`w-full text-left p-3 border-b hover:bg-cream/60 ${
-              active?.id === c.id ? "bg-mist/40" : ""
-            }`}
+            className={`w-full text-left p-3 border-b border-stone/20 hover:bg-mist/30 text-forest ${
+                active?.id === c.id ? "bg-mist/50" : ""}`}
           >
             <p className="font-medium text-sm">{c.otherParty?.name}</p>
             <p className="text-xs text-stone truncate">{c.lastMessage || "No messages yet"}</p>
@@ -98,7 +97,7 @@ export default function Messages() {
                 <div key={m.id} className={`flex ${m.mine ? "justify-end" : "justify-start"}`}>
                   <div
                     className={`max-w-xs px-3 py-2 rounded-lg text-sm ${
-                      m.mine ? "tebg-forest text-white" : "bg-mist/30 text-forest"
+                      m.mine ? "bg-forest text-white" : "bg-mist/60 text-forest"
                     }`}
                   >
                     {m.body}
@@ -114,7 +113,7 @@ export default function Messages() {
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
               />
-              <button className="tebg-forest text-white px-4 rounded">Send</button>
+             <button className="bg-forest text-white px-4 rounded-lg hover:bg-stone font-medium">Send</button>
             </form>
           </>
         ) : (
