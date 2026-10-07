@@ -55,7 +55,9 @@ export default function Messages() {
     const body = draft.trim();
     setDraft("");
 
-    const socket = socketRef.current;
+    const socket = io(import.meta.env.VITE_API_URL || "http://localhost:5000", {
+  auth: { token: getToken() },
+});
     if (socket && socket.connected) {
       socket.emit("message:send", { conversationId: active.id, body }, (ack) => {
         if (ack && ack.success) {
