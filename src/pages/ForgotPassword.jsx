@@ -56,7 +56,7 @@ export default function ForgotPassword() {
             <input className={inputClass} type="email" placeholder="Email address"
               value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
-          <button className="w-full tebg-forest text-white py-2.5 rounded-lg font-medium">Send reset code</button>
+          <button className="w-full bg-forest text-white py-2.5 rounded-lg font-medium hover:bg-stone">Send reset code</button>
         </form>
       ) : (
         <form onSubmit={reset} className="space-y-4">
@@ -70,7 +70,7 @@ export default function ForgotPassword() {
             <input className={inputClass} type="password" placeholder="New password (min 8 chars)"
               value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
           </div>
-          <button className="w-full tebg-forest text-white py-2.5 rounded-lg font-medium">Reset password</button>
+          <button className="w-full bg-forest text-white py-2.5 rounded-lg font-medium hover:bg-stone">Send reset code</button>
         </form>
       )}
 

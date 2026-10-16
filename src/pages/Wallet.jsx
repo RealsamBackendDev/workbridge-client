@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ArrowDownToLine, ArrowUpFromLine, Landmark } from "lucide-react";
 import api from "../lib/api";
 import { useAuth } from "../context/AuthContext";
+import { useSearchParams } from "react-router-dom";
 
 const inputClass =
   "w-full border border-stone/40 rounded-lg p-2.5 bg-white text-forest placeholder-stone focus:outline-none focus:ring-2 focus:ring-forest/40";
@@ -16,6 +17,7 @@ export default function Wallet() {
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const load = async () => {
     const [bal, tx, wd] = await Promise.all([
@@ -31,18 +33,34 @@ export default function Wallet() {
   useEffect(() => { load(); }, []);
 
   const topup = async (e) => {
-    e.preventDefault();
-    setError("");
-    setMessage("");
-    try {
-      await api.post("/wallet/topup", { amount: Number(topupAmount) });
-      setTopupAmount("");
-      setMessage("Wallet topped up (simulated).");
+  e.preventDefault();
+  setError("");
+  setMessage("");
+  try {
+    const { data } = await api.post("/payments/paystack/initialize", { amount: Number(topupAmount) });
+    window.location.href = data.data.authorizationUrl;
+  } catch (err) {
+    setError(err.response?.data?.message || "Could not initialize payment");
+  }
+};
+
+useEffect(() => {
+  const reference = searchParams.get("reference");
+  if (!reference) return;
+  setMessage("Confirming your payment...");
+  api.get(`/payments/paystack/verify/${reference}`)
+    .then(({ data }) => {
+      setMessage(data.data.status === "COMPLETED"
+        ? `Payment confirmed! New balance: ₦${data.data.balance?.toLocaleString()}`
+        : "Payment was not completed. No funds were added.");
+      setSearchParams({});
       load();
-    } catch (err) {
-      setError(err.response?.data?.message || "Top-up failed");
-    }
-  };
+    })
+    .catch((err) => {
+      setError(err.response?.data?.message || "Payment verification failed");
+      setSearchParams({});
+    });
+}, [searchParams]);
 
   const withdraw = async (e) => {
     e.preventDefault();

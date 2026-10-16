@@ -9,6 +9,17 @@ html, body, #root {
   height: 100%;
 }
 
+img, video, canvas, svg {
+  max-width: 100%;
+}
+
+html, body {
+  overflow-x: clip;
+}
+input, select, textarea {
+  font-size: 16px;
+}
+
 @layer components {
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 bg-forest text-white font-medium px-4 py-2 rounded-lg hover:bg-stone transition-colors disabled:opacity-50;
