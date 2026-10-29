@@ -96,8 +96,8 @@ useEffect(() => {
         {user?.role === "CLIENT" && (
           <form onSubmit={topup} className="border border-stone/30 rounded-2xl p-4 mt-4 bg-white space-y-3">
             <h3 className="font-semibold text-sm text-forest flex items-center gap-2">
-              <ArrowDownToLine size={14} /> Top up (simulated)
-            </h3>
+  <ArrowDownToLine size={14} /> Top up with card (Paystack)
+</h3>
             <input className={inputClass} type="number" placeholder="Amount ₦"
               value={topupAmount} onChange={(e) => setTopupAmount(e.target.value)} required />
             <button className="w-full bg-forest text-white px-4 py-2 rounded-lg text-sm hover:bg-stone">Add funds</button>
